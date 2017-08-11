@@ -14,6 +14,7 @@
 # under the License.
 
 import click
+from cli.restapi import ConsumeAPIs
 
 
 @click.command()
@@ -21,6 +22,9 @@ import click
 @click.pass_obj
 def version(app_context, server):
     """Display the current version."""
+    version_dict = {"client": "Transtats client %s" % app_context.version}
     if server:
-        click.echo("Transtats server 0.1.3")
-    click.echo("Transtats client %s" % app_context.version)
+        response = ConsumeAPIs(app_context.server_url).server_version
+        if isinstance(response, dict):
+            version_dict.update(response)
+    app_context.print_r(version_dict)

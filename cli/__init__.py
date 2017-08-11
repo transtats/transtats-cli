@@ -13,7 +13,11 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+import os
+import json
 import click
+
+from pathlib import Path
 
 from cli.common import commands as common
 from cli.translations import commands as trans
@@ -23,14 +27,30 @@ class AppContext(object):
     """
     CLI Application Context Data
     """
-    def __init__(self):
+    def __init__(self, app_config):
         self.version = "0.1.0"
+
+        for attrib, value in app_config.items():
+            setattr(self, str(attrib), value)
+
+    @staticmethod
+    def print_r(result_dict):
+        click.echo(json.dumps(result_dict, indent=4, sort_keys=True))
 
 
 @click.group()
 @click.pass_context
 def entry_point(ctx):
-    ctx.obj = AppContext()
+    config_path = os.path.join(str(Path.home()) + "/.config/", "transtats.conf")
+    try:
+        # Parse Config
+        with open(config_path) as config_file:
+            config_data = json.loads(config_file.read())
+    except (IOError, Exception):
+        click.echo("Config file could not be loaded.")
+        exit(1)
+    else:
+        ctx.obj = AppContext(config_data)
 
 entry_point.add_command(common.version)
 entry_point.add_command(trans.status)
