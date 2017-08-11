@@ -21,4 +21,12 @@ setup(
         [console_scripts]
         transtats=cli:entry_point
     ''',
+    classifiers=[
+        'License :: OSI Approved :: Apache License 2.0 (Apache-2.0)',
+        'Environment :: Console',
+        'Intended Audience :: Developers',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.5',
+    ],
 )

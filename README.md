@@ -1,6 +1,8 @@
 # transtats-cli
 Transtats command line interface to query transtats server.
 
+Please place `transtats.conf` at `~/.config/`
+
 ```shell
 Usage: transtats [OPTIONS] COMMAND [ARGS]...
 

@@ -14,27 +14,42 @@
 # under the License.
 
 import click
+from cli.restapi import ConsumeAPIs
 
 
 @click.command()
+@click.option('--server-url', envvar='TRANSTATS_SERVER', help="Transtats Server URL")
 @click.argument('package-name')
-def status(package_name):
+@click.pass_obj
+def status(app_context, server_url, package_name):
     """Translation status of a package."""
-    click.echo("%s Status" % package_name)
+    api_obj = ConsumeAPIs(server_url or app_context.server_url)
+    response = api_obj.package_status(package_name)
+    if isinstance(response, dict):
+        app_context.print_r(response)
 
 
 @click.command()
+@click.option('--server-url', envvar='TRANSTATS_SERVER', help="Transtats Server URL")
 @click.argument('graph-rule')
-def coverage(graph_rule):
+@click.pass_obj
+def coverage(app_context, server_url, graph_rule):
     """Translation coverage as per graph rule."""
-    click.echo("Graph rule %s" % graph_rule)
+    api_obj = ConsumeAPIs(server_url or app_context.server_url)
+    response = api_obj.rule_coverage(graph_rule)
+    if isinstance(response, dict):
+        app_context.print_r(response)
 
 
 @click.command()
+@click.option('--server-url', envvar='TRANSTATS_SERVER', help="Transtats Server URL")
 @click.option("--detail", is_flag=True, help="For individual packages grouped by languages.")
 @click.argument('release-branch')
-def workload(detail, release_branch):
+@click.pass_obj
+def workload(app_context, server_url, detail, release_branch):
     """Translation workload of a release branch."""
-    if detail:
-        click.echo("detail view")
-    click.echo("Translation Workload %s" % release_branch)
+    api_obj = ConsumeAPIs(server_url or app_context.server_url)
+    response = api_obj.release_workload(release_branch, detail=True) \
+        if detail else api_obj.release_workload(release_branch)
+    if isinstance(response, dict):
+        app_context.print_r(response)
