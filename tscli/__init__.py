@@ -17,8 +17,8 @@ import os
 import json
 import click
 
-from cli.common import commands as common
-from cli.translations import commands as trans
+from tscli.common import commands as common
+from tscli.translations import commands as trans
 
 
 class AppContext(object):

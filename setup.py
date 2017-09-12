@@ -1,12 +1,12 @@
 #!/usr/bin/env python
-"""transtats command line tool"""
+"""transtats command line interface"""
 from setuptools import setup, find_packages
 
 
 setup(
     name='transtats-cli',
     version='0.1.0',
-    description="Command line tool for transtats",
+    description="Command line interface for transtats",
     platforms=["Linux"],
     packages=find_packages(),
     author="Sundeep Anand",
@@ -17,6 +17,7 @@ setup(
         'Click', 'requests'
     ],
     scripts=["transtats"],
+    data_files=[('/usr/share/man/man1', ['docs/man/transtats.1'])],
     # entry_points='''
     #     [console_scripts]
     #     transtats=cli:entry_point

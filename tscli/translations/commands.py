@@ -14,7 +14,7 @@
 # under the License.
 
 import click
-from cli.restapi import ConsumeAPIs
+from tscli.restapi import ConsumeAPIs
 
 
 @click.command()
