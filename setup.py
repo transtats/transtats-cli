@@ -14,7 +14,7 @@ setup(
     url="http://transtats.org",
     license="Apache License 2.0",
     install_requires=[
-        'Click', 'requests'
+        'Click', 'requests', 'six'
     ],
     scripts=["transtats"],
     data_files=[('/usr/share/man/man1', ['docs/man/transtats.1'])],

@@ -18,6 +18,7 @@ import json
 import click
 
 from tscli.common import commands as common
+from tscli.config import get_config, get_config_item
 from tscli.translations import commands as trans
 
 
@@ -25,11 +26,12 @@ class AppContext(object):
     """
     CLI Application Context Data
     """
-    def __init__(self, app_config):
-        self.version = "0.1.0"
-
-        for attrib, value in app_config.items():
-            setattr(self, str(attrib), value)
+    def __init__(self):
+        self.version = "0.1.1"
+        self.config = get_config()
+        self.server_url = get_config_item(
+            self.config, 'server', 'server_url'
+        )
 
     @staticmethod
     def print_r(result_dict):
@@ -39,17 +41,10 @@ class AppContext(object):
 @click.group()
 @click.pass_context
 def entry_point(ctx):
-    config_path = os.path.join(str(os.path.expanduser("~")) +
-                               "/.config/", "transtats.conf")
-    try:
-        # Parse Config
-        with open(config_path) as config_file:
-            config_data = json.loads(config_file.read())
-    except (IOError, Exception):
-        click.echo("Config file could not be loaded.")
-        exit(1)
-    else:
-        ctx.obj = AppContext(config_data)
+    """
+    Entry point function
+    """
+    ctx.obj = AppContext()
 
 entry_point.add_command(common.version)
 entry_point.add_command(trans.status)
