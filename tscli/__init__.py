@@ -17,6 +17,8 @@ import os
 import json
 import click
 
+import tscli.config
+
 from tscli.common import commands as common
 from tscli.translations import commands as trans
 
@@ -50,6 +52,8 @@ def entry_point(ctx):
         exit(1)
     else:
         ctx.obj = AppContext(config_data)
+
+ts_config_file = tscli.config.get_config()
 
 entry_point.add_command(common.version)
 entry_point.add_command(trans.status)
