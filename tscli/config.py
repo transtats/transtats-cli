@@ -30,7 +30,7 @@ def get_config():
     config = configparser.ConfigParser()
     home_dir = os.path.expanduser('~')
     paths = [
-        os.path.join(home_dir, '.config', 'transtats', 'transtats.conf'),
+        os.path.join(home_dir, '.config', 'transtats.conf'),
     ]
     if os.environ.get('TRANSTATS_TEST_CONFIG', 'false').lower() == 'true':
         test_config_path = os.path.abspath(os.path.join(
