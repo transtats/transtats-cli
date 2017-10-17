@@ -52,7 +52,8 @@ def get_config():
 
 def get_config_item(config, section, item):
     """
-    Get the value of a config item and throws a ClickException if it doesn't exist
+    Get the value of a config item and
+    throws a ClickException if it doesn't exist
     """
     try:
         return config.get(section, item)

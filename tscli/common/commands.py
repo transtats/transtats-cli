@@ -18,14 +18,17 @@ from tscli.restapi import ConsumeAPIs
 
 
 @click.command()
-@click.option('--server-url', envvar='TRANSTATS_SERVER', help="Transtats Server URL")
+@click.option(
+    '--server-url', envvar='TRANSTATS_SERVER', help="Transtats Server URL"
+)
 @click.option("--server", is_flag=True, help="Server version.")
 @click.pass_obj
 def version(app_context, server_url, server):
     """Display the current version."""
     version_dict = {"client": "Transtats client %s" % app_context.version}
     if server:
-        response = ConsumeAPIs(server_url or app_context.server_url).server_version
+        response = \
+            ConsumeAPIs(server_url or app_context.server_url).server_version
         if isinstance(response, dict):
             version_dict.update(response)
     app_context.print_r(version_dict)
