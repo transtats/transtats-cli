@@ -13,7 +13,6 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-import os
 import json
 import click
 
@@ -21,13 +20,15 @@ from tscli.common import commands as common
 from tscli.config import get_config, get_config_item
 from tscli.translations import commands as trans
 
+APP_VERSION = "0.1.1"
+
 
 class AppContext(object):
     """
     CLI Application Context Data
     """
     def __init__(self):
-        self.version = "0.1.1"
+        self.version = APP_VERSION
         self.config = get_config()
         self.server_url = get_config_item(
             self.config, 'server', 'server_url'
@@ -45,6 +46,7 @@ def entry_point(ctx):
     Entry point function
     """
     ctx.obj = AppContext()
+
 
 entry_point.add_command(common.version)
 entry_point.add_command(trans.status)
