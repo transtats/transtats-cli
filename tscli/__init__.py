@@ -20,7 +20,7 @@ from tscli.common import commands as common
 from tscli.config import get_config, get_config_item
 from tscli.translations import commands as trans
 
-APP_VERSION = "0.1.1"
+APP_VERSION = "0.1.2"
 
 
 class AppContext(object):
@@ -43,12 +43,12 @@ class AppContext(object):
 @click.pass_context
 def entry_point(ctx):
     """
-    Entry point function
+    Transtats CLI to communicate with server
     """
     ctx.obj = AppContext()
 
 
 entry_point.add_command(common.version)
-entry_point.add_command(trans.status)
+entry_point.add_command(trans.package)
+entry_point.add_command(trans.release)
 entry_point.add_command(trans.coverage)
-entry_point.add_command(trans.workload)
