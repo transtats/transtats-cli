@@ -80,9 +80,9 @@ def mock_rule_coverage():
     return mock_rep
 
 
-def mock_release_workload():
+def mock_release_status():
     """
-    release_workload mock value
+    release_status mock value
     """
     mock_rep = Mock()
     mock_rep.ok = True

@@ -69,7 +69,7 @@ class TestTranstatsCLI(TestCase):
             mock_request_get.return_value = \
                 test_data.mock_package_status()
             runner = CliRunner()
-            result = runner.invoke(entry_point, ['status', 'systemd'])
+            result = runner.invoke(entry_point, ['package', 'systemd'])
             self.assertEqual(result.exit_code, 0)
             self.assertIn('systemd', result.output)
             self.assertIn('translation_stats', result.output)
@@ -91,24 +91,24 @@ class TestTranstatsCLI(TestCase):
             self.assertIn('translation_stats', result.output)
             self.assertIn('graph_rule', result.output)
 
-    def test_release_workload(self):
+    def test_release_status(self):
         """
-        transtats workload <release>
+        transtats status <release>
         """
         from tscli import entry_point
 
         with patch('requests.get') as mock_request_get:
             mock_request_get.return_value = \
-                test_data.mock_release_workload()
+                test_data.mock_release_status()
             runner = CliRunner()
-            result = runner.invoke(entry_point, ['workload', 'fedora-27'])
+            result = runner.invoke(entry_point, ['release', 'fedora-27'])
             self.assertEqual(result.exit_code, 0)
             self.assertIn('fedora-27', result.output)
             self.assertIn('Calculated on', result.output)
 
-    def test_release_workload_detail(self):
+    def test_release_status_detail(self):
         """
-        transtats workload <release> --detail
+        transtats status <release> --detail
         """
         from tscli import entry_point
 
@@ -117,7 +117,7 @@ class TestTranstatsCLI(TestCase):
                 test_data.mock_release_workload_detail()
             runner = CliRunner()
             result = runner.invoke(entry_point,
-                                   ['workload', 'fedora-27', '--detail'])
+                                   ['release', 'fedora-27', '--detail'])
             self.assertEqual(result.exit_code, 0)
             result_json = json.loads(result.output)
             self.assertIn("Release", result_json)

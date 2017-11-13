@@ -58,7 +58,7 @@ class ConsumeAPIs(object):
         """
         Fetch package status
         """
-        ENDPOINT = "/status/" + package + "/"
+        ENDPOINT = "/package/" + package + "/"
         return self._call_api(ENDPOINT)
 
     def rule_coverage(self, graph_rule):
@@ -68,11 +68,11 @@ class ConsumeAPIs(object):
         ENDPOINT = "/coverage/" + graph_rule + "/"
         return self._call_api(ENDPOINT)
 
-    def release_workload(self, release, detail=None):
+    def release_status(self, release, detail=None):
         """
-        Fetch release workload
+        Fetch release status
         """
-        ENDPOINT = "/workload/" + release + "/"
+        ENDPOINT = "/release/" + release + "/"
         if detail:
             ENDPOINT = ENDPOINT + "detail"
         return self._call_api(ENDPOINT)
