@@ -8,14 +8,16 @@ Transtats command line interface to query transtats server.
 ```shell
 Usage: transtats [OPTIONS] COMMAND [ARGS]...
 
+  Transtats CLI to communicate with server
+
 Options:
   --help  Show this message and exit.
 
 Commands:
   coverage  Translation coverage as per graph rule.
-  status    Translation status of a package.
+  package   Translation status of a package.
+  release   Translation status of a release branch.
   version   Display the current version.
-  workload  Translation workload of a release branch.
 ```
 
 
