@@ -19,7 +19,7 @@ setup(
     platforms=["Linux"],
     packages=find_packages(),
     author="Sundeep Anand",
-    author_email="suanand@redhat.com",
+    author_email="suanand@fedoraproject.org",
     url="http://transtats.org",
     license="Apache License 2.0",
     install_requires=REQUIRE,
