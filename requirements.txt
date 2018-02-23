@@ -2,3 +2,4 @@ click
 mock
 requests
 six
+tabulate

@@ -1,4 +1,4 @@
-# Copyright 2017 Red Hat, Inc.
+# Copyright 2017, 2018 Red Hat, Inc.
 # All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
@@ -16,11 +16,10 @@
 from __future__ import absolute_import
 
 import os
-import json
+from unittest import TestCase
 from click.testing import CliRunner
 from mock import patch
 from tests import test_data
-from unittest import TestCase
 
 
 class TestTranstatsCLI(TestCase):
@@ -72,7 +71,7 @@ class TestTranstatsCLI(TestCase):
             result = runner.invoke(entry_point, ['package', 'systemd'])
             self.assertEqual(result.exit_code, 0)
             self.assertIn('systemd', result.output)
-            self.assertIn('translation_stats', result.output)
+            self.assertIn('Branch', result.output)
             self.assertIn('percentage_calculated_on', result.output)
 
     def test_rule_coverage(self):
@@ -87,9 +86,8 @@ class TestTranstatsCLI(TestCase):
             runner = CliRunner()
             result = runner.invoke(entry_point, ['coverage', 'rhinstaller'])
             self.assertEqual(result.exit_code, 0)
-            self.assertIn('branch', result.output)
-            self.assertIn('translation_stats', result.output)
-            self.assertIn('graph_rule', result.output)
+            self.assertIn('Branch', result.output)
+            self.assertIn('Graph Rule', result.output)
 
     def test_release_status(self):
         """
@@ -106,6 +104,23 @@ class TestTranstatsCLI(TestCase):
             self.assertIn('fedora-27', result.output)
             self.assertIn('Calculated on', result.output)
 
+    def test_release_status_json(self):
+        """
+        transtats status <release>
+        """
+        from tscli import entry_point
+
+        with patch('requests.get') as mock_request_get:
+            mock_request_get.return_value = \
+                test_data.mock_release_status()
+            runner = CliRunner()
+            result = runner.invoke(entry_point, ['release', '--json',
+                                                 'fedora-27'])
+            self.assertEqual(result.exit_code, 0)
+            self.assertIsInstance(eval(result.output), dict)
+            self.assertIn('fedora-27', result.output)
+            self.assertIn('Calculated on', result.output)
+
     def test_release_status_detail(self):
         """
         transtats status <release> --detail
@@ -119,6 +134,5 @@ class TestTranstatsCLI(TestCase):
             result = runner.invoke(entry_point,
                                    ['release', 'fedora-27', '--detail'])
             self.assertEqual(result.exit_code, 0)
-            result_json = json.loads(result.output)
-            self.assertIn("Release", result_json)
-            self.assertEqual(len(result_json.keys()), 2+1)
+            self.assertIn("Release", result.output)
+            self.assertIn('Calculated on', result.output)
