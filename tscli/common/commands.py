@@ -39,5 +39,6 @@ def version(app_context, server_url, server, json):
     else:
         print("Transtats client : {0}".format(app_context.version))
         if server:
-            response = TextOutputAPIs(server_url or
-                                      app_context.server_url).server_version
+            TextOutputAPIs(
+                server_url or app_context.server_url
+            ).server_version

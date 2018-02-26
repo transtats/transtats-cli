@@ -106,7 +106,7 @@ class TestTranstatsCLI(TestCase):
 
     def test_release_status_json(self):
         """
-        transtats status <release>
+        transtats status <release> --json
         """
         from tscli import entry_point
 
