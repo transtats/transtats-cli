@@ -39,14 +39,15 @@ class TextOutputAPIs(object):
                 print("Server version information is not available")
                 return
             else:
-                print("Transtats server : {0}".format(machine_value))
+                print("Transtats server : {0}".format(
+                    "".join(machine_value.split()[1:])))
         return
 
     def package_status(self, package):
         """
         Fetch package status
         """
-        table_headers = ["Language", "Completion"]
+        table_headers = ["Language", "Completion %"]
         json_data = self.raw_data.package_status(package)
 
         # Get key pkg_name and its value
@@ -62,7 +63,8 @@ class TextOutputAPIs(object):
                     print("")
                     for b_keys, b_values in lvl2_value.items():
                         print("Branch : {0}".format(b_keys))
-                        print(tabulate(b_values.items(), table_headers))
+                        print(tabulate(sorted(b_values.items()),
+                                       table_headers))
                         print("")
                 else:
                     print("{0}: {1}".format(lvl2_name, lvl2_value))
@@ -73,7 +75,7 @@ class TextOutputAPIs(object):
         """
         Fetch graph rule coverage
         """
-        table_headers = ["Package", "Completed"]
+        table_headers = ["Package", "Completed %"]
         json_data = self.raw_data.rule_coverage(graph_rule)
 
         rule = list(json_data.values())[0]
@@ -94,7 +96,7 @@ class TextOutputAPIs(object):
         print("")
         for lang_name, pkg_stats in lang_stats.items():
             print("Language : {0}".format(lang_name))
-            print(tabulate(pkg_stats.items(), table_headers))
+            print(tabulate(sorted(pkg_stats.items()), table_headers))
             print("")
 
         return
@@ -125,18 +127,21 @@ class TextOutputAPIs(object):
                         stat_list = []
                         if pkg_name != "Calculated on":
                             stat_list.append(pkg_name)
-                            for text, s in stats.items():
-                                stat_list.append(s)
+                            stat_list.append(stats.get('Total', 0))
+                            stat_list.append(stats.get('Translated', 0))
+                            stat_list.append(stats.get('Untranslated', 0))
+                            stat_list.append("{}%".format(str(stats.get(
+                                'Remaining', 0))))
                             print_data.append(stat_list)
                         else:
                             count_method = stats
                     print("Language : {0}".format(lang_name))
                     print("Calculated on : {0}".format(count_method))
                     print("")
-                    print(tabulate(print_data, table_headers))
+                    print(tabulate(sorted(print_data), table_headers))
                     print("")
         else:
-            json_data = self.raw_data.release_status(release, detail=None)
+            json_data = self.raw_data.release_status(release)
 
             rel_branch = list(json_data.keys())[0]
             rel_data = list(json_data.values())[0]
@@ -149,14 +154,17 @@ class TextOutputAPIs(object):
                 stat_list = []
                 if pkg_name != "Calculated on":
                     stat_list.append(pkg_name)
-                    for text, stats in pkg_stats.items():
-                        stat_list.append(stats)
+                    stat_list.append(pkg_stats.get('Total', 0))
+                    stat_list.append(pkg_stats.get('Translated', 0))
+                    stat_list.append(pkg_stats.get('Untranslated', 0))
+                    stat_list.append("{}%".format(str(pkg_stats.get(
+                        'Remaining', 0))))
                     print_data.append(stat_list)
                 else:
                     count_method = pkg_stats
             print("Release status for : {0}".format(rel_branch))
             print("Calculated on : {0}".format(count_method))
             print("")
-            print(tabulate(print_data, table_headers))
+            print(tabulate(sorted(print_data), table_headers))
 
         return
