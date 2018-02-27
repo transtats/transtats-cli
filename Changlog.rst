@@ -1,6 +1,10 @@
 Changelog
 =========
 
+0.1.2 (2018-02-27)
+----------------
+- Fix the plain text output from the tables by sorting list data - (sundeep-co-in)
+- Fix some cosmetic changes in the code - (sundeep-co-in)
 - Add plain text output for the transtats commands - #11 (pnemade)
 
 0.1.1 (2017-11-15)
