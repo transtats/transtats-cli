@@ -18,9 +18,9 @@ import click
 
 from tscli.common import commands as common
 from tscli.config import get_config, get_config_item
-from tscli.translations import commands as trans
+from tscli.stats import commands as trans
 
-APP_VERSION = "0.1.1"
+APP_VERSION = "0.1.2"
 
 
 class AppContext(object):

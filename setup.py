@@ -19,7 +19,7 @@ setup(
     platforms=["Linux"],
     packages=find_packages(),
     author="Sundeep Anand",
-    author_email="suanand@redhat.com",
+    author_email="suanand@fedoraproject.org",
     url="http://transtats.org",
     license="Apache License 2.0",
     install_requires=REQUIRE,
@@ -37,6 +37,6 @@ setup(
         'Intended Audience :: Developers',
         'Programming Language :: Python',
         'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
     ],
 )
