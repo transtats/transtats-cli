@@ -30,3 +30,7 @@ Commands:
 * If you find any bug/issue or got an idea, open a [github issue](https://github.com/transtats/transtats-cli/issues/new).
 * [travis](https://travis-ci.org/transtats/transtats-cli) runs flake8 and tests `python setup.py flake8 test`
 * Feel free to submit feature requests and/or bug fixes on *devel* branch.
+
+### License
+
+[Apache License](http://www.apache.org/licenses/LICENSE-2.0), Version 2.0
