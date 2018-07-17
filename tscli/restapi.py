@@ -58,21 +58,21 @@ class ConsumeAPIs(object):
         """
         Fetch package status
         """
-        ENDPOINT = "/package/" + package + "/"
+        ENDPOINT = "/package/" + package
         return self._call_api(ENDPOINT)
 
     def rule_coverage(self, graph_rule):
         """
         Fetch graph rule coverage
         """
-        ENDPOINT = "/coverage/" + graph_rule + "/"
+        ENDPOINT = "/coverage/" + graph_rule
         return self._call_api(ENDPOINT)
 
     def release_status(self, release, detail=None):
         """
         Fetch release status
         """
-        ENDPOINT = "/release/" + release + "/"
+        ENDPOINT = "/release/" + release
         if detail:
-            ENDPOINT = ENDPOINT + "detail"
+            ENDPOINT = ENDPOINT + "/detail"
         return self._call_api(ENDPOINT)
