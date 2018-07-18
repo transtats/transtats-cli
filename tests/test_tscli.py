@@ -136,3 +136,21 @@ class TestTranstatsCLI(TestCase):
             self.assertEqual(result.exit_code, 0)
             self.assertIn("Release", result.output)
             self.assertIn('Calculated on', result.output)
+
+    def test_release_status_by_locale(self):
+        """
+        transtats status <release> --locale
+        """
+        from tscli import entry_point
+
+        with patch('requests.get') as mock_request_get:
+            mock_request_get.return_value = \
+                test_data.mock_release_status_by_locale()
+            runner = CliRunner()
+            result = runner.invoke(entry_point,
+                                   ['release', 'fedora-27',
+                                       '--locale', 'ja_JP'])
+            self.assertEqual(result.exit_code, 0)
+            self.assertIn('fedora-27', result.output)
+            self.assertIn('Calculated on', result.output)
+            self.assertIn('Locale', result.output)

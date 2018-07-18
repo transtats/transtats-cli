@@ -68,11 +68,13 @@ class ConsumeAPIs(object):
         ENDPOINT = "/coverage/" + graph_rule
         return self._call_api(ENDPOINT)
 
-    def release_status(self, release, detail=None):
+    def release_status(self, release, locale=None, detail=None):
         """
         Fetch release status
         """
         ENDPOINT = "/release/" + release
         if detail:
             ENDPOINT = ENDPOINT + "/detail"
+        elif locale:
+            ENDPOINT = ENDPOINT + "/locale/" + locale
         return self._call_api(ENDPOINT)

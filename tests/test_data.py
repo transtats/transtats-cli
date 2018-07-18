@@ -106,6 +106,33 @@ def mock_release_status():
     return mock_rep
 
 
+def mock_release_status_by_locale():
+    """
+    release_status_by_locale mock value
+    """
+    mock_rep = Mock()
+    mock_rep.ok = True
+    mock_rep.json.return_value = {
+        "fedora-27": {
+            "anaconda": {
+                "Total": 12080,
+                "Translated": 11191,
+                "Untranslated": 876,
+                "Remaining": 7.25
+            },
+            "abrt": {
+                "Total": 4760,
+                "Translated": 4495,
+                "Untranslated": 262,
+                "Remaining": 5.5
+            },
+            "Calculated on": "Messages",
+            "locale": "ja_JP"
+        }
+    }
+    return mock_rep
+
+
 def mock_release_workload_detail():
     """
     release_workload_detail mock value
