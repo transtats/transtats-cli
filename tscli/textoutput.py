@@ -101,7 +101,7 @@ class TextOutputAPIs(object):
 
         return
 
-    def release_status(self, release, detail=None):
+    def release_status(self, release, locale=None, detail=None):
         """
         Fetch release status
         """
@@ -111,7 +111,8 @@ class TextOutputAPIs(object):
         count_method = ""
 
         if detail:
-            json_data = self.raw_data.release_status(release, detail=True)
+            json_data = self.raw_data.release_status(release, locale=None,
+                                                     detail=True)
 
             for lang_name, pkg_stats in json_data.items():
                 if pkg_stats == "Release not found":
@@ -140,6 +141,38 @@ class TextOutputAPIs(object):
                     print("")
                     print(tabulate(sorted(print_data), table_headers))
                     print("")
+        elif locale:
+            json_data = self.raw_data.release_status(release, locale,
+                                                     detail=False)
+
+            pkg_stats = list(json_data.values())[0]
+            rel_branch = list(json_data.keys())[0]
+            print_data = []
+            not_a_pkg_elements = ("Calculated on", "locale")
+
+            if type(pkg_stats) == str:
+                print("Either release " + release + " does not exists or "
+                      "locale " + locale + " does not belong to "
+                      "requested release " + release)
+                return
+            for pkg_name, stats in pkg_stats.items():
+                stat_list = []
+                if pkg_name not in not_a_pkg_elements:
+                    stat_list.append(pkg_name)
+                    stat_list.append(stats.get('Total', 0))
+                    stat_list.append(stats.get('Translated', 0))
+                    stat_list.append(stats.get('Untranslated', 0))
+                    stat_list.append("{}%".format(str(stats.get(
+                                'Remaining', 0))))
+                    print_data.append(stat_list)
+                elif pkg_name == "Calculated on":
+                    count_method = stats
+            print("Release status for : {0}".format(rel_branch))
+            print("Locale : {0}".format(locale))
+            print("Calculated on : {0}".format(count_method))
+            print("")
+            print(tabulate(sorted(print_data), table_headers))
+            print("")
         else:
             json_data = self.raw_data.release_status(release)
 
