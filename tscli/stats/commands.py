@@ -45,10 +45,10 @@ def package(app_context, server_url, package_name, json):
               help="For individual language specific output.")
 @click.option(
     '--json', is_flag=True, envvar='JSON_OUTPUT', help="Print in JSON format")
-@click.argument('release-branch')
+@click.argument('release-slug')
 @click.pass_obj
-def release(app_context, server_url, detail, release_branch, locale, json):
-    """Translation status of a release branch.
+def release(app_context, server_url, detail, release_slug, locale, json):
+    """Translation status of a release slug/branch.
        e.g. transtats release fedora-29 """
     api_obj = ConsumeAPIs(server_url or app_context.server_url) if json \
         else TextOutputAPIs(server_url or app_context.server_url)
@@ -56,12 +56,12 @@ def release(app_context, server_url, detail, release_branch, locale, json):
     if detail:
         if locale:
             print("Ignoring locale option as detail option also given")
-        response = api_obj.release_status(release_branch, locale=None,
+        response = api_obj.release_status(release_slug, locale=None,
                                           detail=True)
     elif locale:
-        response = api_obj.release_status(release_branch, locale, detail=False)
+        response = api_obj.release_status(release_slug, locale, detail=False)
     else:
-        response = api_obj.release_status(release_branch)
+        response = api_obj.release_status(release_slug)
 
     if isinstance(response, dict):
         app_context.print_r(response)

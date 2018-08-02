@@ -173,3 +173,35 @@ def mock_release_workload_detail():
         "Release": "fedora-27",
     }
     return mock_rep
+
+
+def mock_job_run_syncdownstream():
+    """
+    job run
+    """
+    mock_rep = Mock()
+    mock_rep.ok = True
+    mock_rep.json.return_value = {
+        "Success": "Job created and logged. URL: http://transtats.dev.ext.devlab.redhat.com/jobs/log/2e0af250-3531-44f9-bb1b-b0255cf24cc3/detail",
+        "job_id": "f3d8b62b-bb39-47c4-8b23-f9790c561fa5"
+     }
+    return mock_rep
+
+
+def mock_job_log():
+    """
+    job log mock value
+    """
+    mock_rep = Mock()
+    mock_rep.ok = True
+    mock_rep.json.return_value = {
+            "YML_input": "",
+            "end_time": "2018-07-17 08:41:21",
+            "id": "6c919e29-6738-4549-b298-852ff947c023",
+            "log_output": {""},
+            "remarks": "iok",
+            "result": "",
+            "start_time": "2018-07-17 08:41:20",
+            "type": "syncdownstream"
+    }
+    return mock_rep

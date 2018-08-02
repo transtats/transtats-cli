@@ -3,7 +3,12 @@
 # transtats-cli
 Transtats command line interface to query transtats server.
 
+#### Configuration
+
 `transtats.conf` should be placed inside `~/.config/` directory.
+Users can login to transtats server and get their token. This token can be added
+to transtats.conf file as
+`token = <somevalue>`
 
 ```shell
 Usage: transtats [OPTIONS] COMMAND [ARGS]...
@@ -15,6 +20,7 @@ Options:
 
 Commands:
   coverage  Translation coverage as per graph rule.
+  job       Runs a job and/or show the job log.
   package   Translation status of a package.
   release   Translation status of a release branch.
   version   Display the current version.

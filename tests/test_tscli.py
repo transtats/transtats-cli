@@ -154,3 +154,41 @@ class TestTranstatsCLI(TestCase):
             self.assertIn('fedora-27', result.output)
             self.assertIn('Calculated on', result.output)
             self.assertIn('Locale', result.output)
+
+    def test_job_run_syncdownstream(self):
+        """
+        transtats status <job> run syncdownstream abrt
+        --build_system koji --build_tag f28 --json
+        """
+        from tscli import entry_point
+
+        with patch('requests.get') as mock_request_get:
+            mock_request_get.return_value = \
+                test_data.mock_job_run_syncdownstream()
+            runner = CliRunner()
+            result = runner.invoke(entry_point,
+                                   ['run',
+                                    'syncdownstream',
+                                    '--build_system', 'koji',
+                                    '--build_tag', 'f29'])
+            self.assertEqual(result.exit_code, 0)
+            self.assertIn('Success', result.output)
+            self.assertIn('job_id', result.output)
+
+    def test_job_log(self):
+        """
+        transtats status <job> log
+        """
+        from tscli import entry_point
+
+        with patch('requests.get') as mock_request_get:
+            mock_request_get.return_value = \
+                test_data.mock_job_log()
+            runner = CliRunner()
+            result = runner.invoke(entry_point,
+                                   ['log',
+                                    '6c919e29-6738-4549-b298-852ff947c023'])
+            self.assertEqual(result.exit_code, 0)
+            self.assertIn('end_time', result.output)
+            self.assertIn('start_time', result.output)
+            self.assertIn('type', result.output)

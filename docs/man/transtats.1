@@ -1,5 +1,5 @@
 .\" transtats - Command line interface for transtats
-.TH "TRANSTATS" "1" "February 2018" "transtats 0.1.2" "User Commands"
+.TH "TRANSTATS" "1" "August 2018" "transtats 0.2.0" "User Commands"
 .SH "NAME"
 transtats \- Command line interface for transtats
 .SH "SYNOPSIS"
@@ -25,8 +25,18 @@ Show this message and exit.
    Display the current version.
 
 .br
-.I \fB * release [OPTIONS] RELEASE_BRANCH
-   Translation status of a release branch.
+.I \fB * release [OPTIONS] RELEASE_SLUG
+   Translation status of a release slug(branch).
+
+.br
+.I \fB * job [OPTIONS] COMMAND [ARGS]....
+   Job related operations. There are two sub-commands used with this job command.
+
+   1) transtats job log [OPTIONS] JOB_ID
+      Show the log for a given job id.
+
+   2) transtats job run [OPTIONS] JOB_TYPE PACKAGE_NAME
+      Runs a job and/or show the job log. Available job-types are syncupstream, syncdownstream, stringchange.
 
 .SH "EXAMPLES"
 .PP
@@ -53,6 +63,14 @@ Show this message and exit.
 .PP
    \fBTo know the version of this transtats client along with transtats server.\fP
    transtats version --server
+
+.PP
+   \fBTo submit a job to transtats server. There are 3 types of job that users can submit.\fP
+      These job types are syncupstream, syncdownstream, stringchange.
+      Various job type command examples are given below
+      transtats job run stringchange anaconda
+      transtats job run syncdownstream anaconda --build-system koji --build-tag f29
+      transtats job run stringchange anaconda --release-slug fedora-29
 
 .SH "NOTES"
    These commands give output in plain text format. If you need the same output
