@@ -154,3 +154,40 @@ class TestTranstatsCLI(TestCase):
             self.assertIn('fedora-27', result.output)
             self.assertIn('Calculated on', result.output)
             self.assertIn('Locale', result.output)
+
+    def test_job_run(self):
+        """
+        transtats job run <job-type> <package> --release-slug <release>
+        """
+        from tscli import entry_point
+
+        with patch('requests.post') as mock_request_get:
+            mock_request_get.return_value = \
+                test_data.mock_job_run()
+            runner = CliRunner()
+            result = runner.invoke(entry_point,
+                                   ['job', 'run', 'stringchange', 'iok',
+                                    '--release-slug', 'fedora-29'])
+
+            self.assertEqual(result.exit_code, 0)
+            self.assertIn('Success', result.output)
+            self.assertIn('Job_Id', result.output)
+
+    def test_job_log(self):
+        """
+        transtats job log <job-id>
+        """
+        from tscli import entry_point
+
+        with patch('requests.get') as mock_request_get:
+            mock_request_get.return_value = \
+                test_data.mock_job_log()
+            runner = CliRunner()
+            result = runner.invoke(entry_point,
+                                   ['job', 'log',
+                                    '6c919e29-6738-4549-b298-852ff947c023'])
+
+            self.assertEqual(result.exit_code, 0)
+            self.assertIn('Job End time', result.output)
+            self.assertIn('Job Start time', result.output)
+            self.assertIn('Job Type', result.output)
