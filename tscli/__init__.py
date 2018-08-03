@@ -21,7 +21,7 @@ from tscli.config import get_config, get_config_item
 from tscli.stats import commands as trans
 from tscli.jobs import commands as jobs
 
-APP_VERSION = "0.1.2"
+APP_VERSION = "0.2.0"
 
 
 class AppContext(object):

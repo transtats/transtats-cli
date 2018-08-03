@@ -162,8 +162,7 @@ class TextOutputAPIs(object):
                     stat_list.append(stats.get('Total', 0))
                     stat_list.append(stats.get('Translated', 0))
                     stat_list.append(stats.get('Untranslated', 0))
-                    stat_list.append("{}%".format(str(stats.get(
-                                'Remaining', 0))))
+                    stat_list.append("{}%".format(str(stats.get('Remaining', 0))))
                     print_data.append(stat_list)
                 elif pkg_name == "Calculated on":
                     count_method = stats
@@ -270,7 +269,7 @@ class TextOutputAPIs(object):
 
         first_key = list(json_data.keys())[0]
         if first_key == "detail":
-            print("Invalid token header. No credentials provided.")
+            print("Invalid API token. Please check credentials.")
             return
 
         if first_key == "job_type":
@@ -305,7 +304,7 @@ class TextOutputAPIs(object):
                 return
 
             if list(json_data.values())[0].find(invalid_release_slug) != -1:
-                print("Invalid release_slut given")
+                print("Invalid release_slug given")
                 return
 
         print("\n".join([": ".join([key.title(), value]) for key, value in json_data.items()]))

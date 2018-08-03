@@ -175,33 +175,49 @@ def mock_release_workload_detail():
     return mock_rep
 
 
-def mock_job_run_syncdownstream():
+def mock_job_run():
     """
-    job run
+    job_run mock value
     """
     mock_rep = Mock()
     mock_rep.ok = True
     mock_rep.json.return_value = {
-        "Success": "Job created and logged. URL: http://transtats.dev.ext.devlab.redhat.com/jobs/log/2e0af250-3531-44f9-bb1b-b0255cf24cc3/detail",
-        "job_id": "f3d8b62b-bb39-47c4-8b23-f9790c561fa5"
-     }
+        "Success": "Job created and logged. "
+                   "URL: http://test.transtats.org/jobs/log/bda71131-d177-44d9-9ee7-5df53f03c024/detail",
+        "job_id": "bda71131-d177-44d9-9ee7-5df53f03c024"
+    }
     return mock_rep
 
 
 def mock_job_log():
     """
-    job log mock value
+    job_log mock value
     """
     mock_rep = Mock()
     mock_rep.ok = True
     mock_rep.json.return_value = {
-            "YML_input": "",
-            "end_time": "2018-07-17 08:41:21",
-            "id": "6c919e29-6738-4549-b298-852ff947c023",
-            "log_output": {""},
-            "remarks": "iok",
-            "result": "",
-            "start_time": "2018-07-17 08:41:20",
-            "type": "syncdownstream"
+        "id": "bda71131-d177-44d9-9ee7-5df53f03c024",
+        "type": "stringchange",
+        "start_time": "2018-08-03 11:39:00",
+        "end_time": "2018-08-03 11:39:02",
+        "result": True,
+        "remarks": "iok",
+        "YML_input": "job: exception: raise execution: sequential name: string change package: iok",
+        "log_output": {
+            "Clone Repository": {
+                "2018-08-03 11:39:01.006607": "Start cloning https://pagure.io/iok.git repository.",
+                "2018-08-03 11:39:01.730884": " :: Cloning git repo completed., .git, "
+            },
+            "Generate POT File": {
+                "2018-08-03 11:39:02.022360": " :: POT file generated successfully. [ iok.pot ], "
+            },
+            "Calculate Differences": {
+                "2018-08-03 11:39:02.142378": "No new or updated messages found."
+            },
+            "Download platform POT file": {
+                "2018-08-03 11:39:02.134145": "POT downloaded successfully. "
+                                              "URL: https://fedora.../pot?docId=iok"
+            }
+        }
     }
     return mock_rep

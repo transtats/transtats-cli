@@ -6,9 +6,14 @@ Transtats command line interface to query transtats server.
 #### Configuration
 
 `transtats.conf` should be placed inside `~/.config/` directory.
-Users can login to transtats server and get their token. This token can be added
-to transtats.conf file as
-`token = <somevalue>`
+Transtats server url and API token can be added as
+```shell
+    [server]
+    server_url = http://app.server.transtats.org
+    token = <API-token-from-server>
+```
+
+#### Commands
 
 ```shell
 Usage: transtats [OPTIONS] COMMAND [ARGS]...
