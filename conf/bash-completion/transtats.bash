@@ -20,7 +20,7 @@ _transtats()
     # global options
     local options="--help"
     local options_value=
-    local commands="coverage package release version"
+    local commands="coverage job package release version"
 
     # parse main options and get command
     local command=
@@ -62,12 +62,15 @@ _transtats()
 
     # parse command specific options
     local options="--json --server-url --help"
-    local options_release= options_version=
+    local options_release= options_version= options_job=
     local after= after_more=
 
     case $command in
+	job)
+	    options_job="--build-tag --build-system --release-slug"
+	    ;;
         release)
-            options_release="--detail "
+            options_release="--detail --locale"
             ;;
         version)
             options_version="--server"
@@ -75,7 +78,7 @@ _transtats()
     esac
 
     local all_options="--help $options"
-    local all_options_value="$options_release $options_version"
+    local all_options_value="$options_release $options_version $options_job"
 
     # count non-option parameters
     local i w
@@ -100,6 +103,8 @@ _transtats()
     if [[ -n $options_release ]] && in_array "$prev" "$options_release"; then
         COMPREPLY=( )
     elif [[ -n $options_version ]] && in_array "$prev" "$options_version"; then
+        COMPREPLY=( )
+    elif [[ -n $options_job ]] && in_array "$prev" "$options_job"; then
         COMPREPLY=( )
     else
         local after_options=
