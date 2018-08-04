@@ -26,7 +26,9 @@ setup(
     setup_requires=["flake8"],
     test_suite="tests.tscli_test_suit",
     scripts=["transtats"],
-    data_files=[('/usr/share/man/man1', ['docs/man/transtats.1'])],
+    data_files=[('/usr/share/man/man1', ['docs/man/transtats.1']),
+                ('/usr/share/bash-completion/completions',
+                 ['conf/bash-completion/transtats.bash'])],
     # entry_points='''
     #     [console_scripts]
     #     transtats=tscli:entry_point
@@ -37,6 +39,8 @@ setup(
         'Intended Audience :: Developers',
         'Programming Language :: Python',
         'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
     ],
 )

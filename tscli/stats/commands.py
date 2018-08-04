@@ -41,18 +41,28 @@ def package(app_context, server_url, package_name, json):
     '--server-url', envvar='TRANSTATS_SERVER', help="Transtats Server URL")
 @click.option("--detail", is_flag=True,
               help="For individual packages grouped by languages.")
+@click.option("--locale", is_flag=False,
+              help="For individual language specific output.")
 @click.option(
     '--json', is_flag=True, envvar='JSON_OUTPUT', help="Print in JSON format")
-@click.argument('release-branch')
+@click.argument('release-slug')
 @click.pass_obj
-def release(app_context, server_url, detail, release_branch, json):
-    """Translation status of a release branch.
-       e.g. transtats release fedora-27 """
+def release(app_context, server_url, detail, release_slug, locale, json):
+    """Translation status of a release slug/branch.
+       e.g. transtats release fedora-29 """
     api_obj = ConsumeAPIs(server_url or app_context.server_url) if json \
         else TextOutputAPIs(server_url or app_context.server_url)
 
-    response = api_obj.release_status(release_branch, detail=True) \
-        if detail else api_obj.release_status(release_branch)
+    if detail:
+        if locale:
+            print("Ignoring locale option as detail option also given")
+        response = api_obj.release_status(release_slug, locale=None,
+                                          detail=True)
+    elif locale:
+        response = api_obj.release_status(release_slug, locale, detail=False)
+    else:
+        response = api_obj.release_status(release_slug)
+
     if isinstance(response, dict):
         app_context.print_r(response)
 

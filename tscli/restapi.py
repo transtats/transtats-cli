@@ -13,8 +13,10 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-
+import json
 import requests
+
+from tscli.config import get_config, get_config_item
 
 
 class ConsumeAPIs(object):
@@ -33,6 +35,9 @@ class ConsumeAPIs(object):
         """
         self.base_URL = base_url \
             if base_url.endswith("/") else base_url + "/"
+        self.config = get_config()
+        self.token = get_config_item(
+            self.config, 'server', 'token')
 
     def _call_api(self, endpoint):
         """
@@ -44,6 +49,27 @@ class ConsumeAPIs(object):
             return self.ERR_JSON
         else:
             return response.json() if response.ok else self.ERR_JSON
+
+    def _read_token(self):
+        """
+        Read the token value
+        """
+        return self.token
+
+    def _send_api(self, endpoint, payload):
+        """
+        Single point to send API
+        """
+        head = {'Authorization': 'token {}'.format(self._read_token()),
+                'Content-Type': 'application/json'}
+        try:
+            response = requests.post(self.base_URL +
+                                     self.middle_URL + endpoint,
+                                     headers=head, data=json.dumps(payload))
+        except Exception:
+            return self.ERR_JSON
+
+        return response.json()
 
     @property
     def server_version(self):
@@ -58,21 +84,55 @@ class ConsumeAPIs(object):
         """
         Fetch package status
         """
-        ENDPOINT = "/package/" + package + "/"
+        ENDPOINT = "/package/" + package
         return self._call_api(ENDPOINT)
 
     def rule_coverage(self, graph_rule):
         """
         Fetch graph rule coverage
         """
-        ENDPOINT = "/coverage/" + graph_rule + "/"
+        ENDPOINT = "/coverage/" + graph_rule
         return self._call_api(ENDPOINT)
 
-    def release_status(self, release, detail=None):
+    def release_status(self, release, locale=None, detail=None):
         """
         Fetch release status
         """
-        ENDPOINT = "/release/" + release + "/"
+        ENDPOINT = "/release/" + release
         if detail:
-            ENDPOINT = ENDPOINT + "detail"
+            ENDPOINT = ENDPOINT + "/detail"
+        elif locale:
+            ENDPOINT = ENDPOINT + "/locale/" + locale
         return self._call_api(ENDPOINT)
+
+    def job_log(self, job_id):
+        """
+        Fetch the logs for the given job id
+        """
+        ENDPOINT = "/job/" + job_id + "/log"
+        return self._call_api(ENDPOINT)
+
+    def job_run(self, job_type, package_name, build_system=None,
+                build_tag=None, release_slug=None):
+        """
+        Submit the job for the given job type and package name
+        """
+        ENDPOINT = "/job/run"
+        _ENDPOINT = "/package/" + package_name + "/exist"
+        pkg_exists = self._call_api(_ENDPOINT)
+        if list(pkg_exists.values())[0]:
+            if job_type == "syncupstream":
+                payload = {'job_type': job_type, 'package_name': package_name}
+            elif job_type == "syncdownstream":
+                payload = {'job_type': job_type, 'package_name': package_name,
+                           'build_system': build_system,
+                           'build_tag': build_tag}
+            elif job_type == "stringchange":
+                payload = {'job_type': job_type, 'package_name': package_name,
+                           'release_slug': release_slug}
+            else:
+                return {"job_type": "Invalid job type"}
+        else:
+            return {"pkg_error": "Given package does not exists"}
+
+        return self._send_api(ENDPOINT, payload)

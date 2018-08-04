@@ -106,6 +106,33 @@ def mock_release_status():
     return mock_rep
 
 
+def mock_release_status_by_locale():
+    """
+    release_status_by_locale mock value
+    """
+    mock_rep = Mock()
+    mock_rep.ok = True
+    mock_rep.json.return_value = {
+        "fedora-27": {
+            "anaconda": {
+                "Total": 12080,
+                "Translated": 11191,
+                "Untranslated": 876,
+                "Remaining": 7.25
+            },
+            "abrt": {
+                "Total": 4760,
+                "Translated": 4495,
+                "Untranslated": 262,
+                "Remaining": 5.5
+            },
+            "Calculated on": "Messages",
+            "locale": "ja_JP"
+        }
+    }
+    return mock_rep
+
+
 def mock_release_workload_detail():
     """
     release_workload_detail mock value
@@ -144,5 +171,53 @@ def mock_release_workload_detail():
             "Calculated on": "Messages"
         },
         "Release": "fedora-27",
+    }
+    return mock_rep
+
+
+def mock_job_run():
+    """
+    job_run mock value
+    """
+    mock_rep = Mock()
+    mock_rep.ok = True
+    mock_rep.json.return_value = {
+        "Success": "Job created and logged. "
+                   "URL: http://test.transtats.org/jobs/log/bda71131-d177-44d9-9ee7-5df53f03c024/detail",
+        "job_id": "bda71131-d177-44d9-9ee7-5df53f03c024"
+    }
+    return mock_rep
+
+
+def mock_job_log():
+    """
+    job_log mock value
+    """
+    mock_rep = Mock()
+    mock_rep.ok = True
+    mock_rep.json.return_value = {
+        "id": "bda71131-d177-44d9-9ee7-5df53f03c024",
+        "type": "stringchange",
+        "start_time": "2018-08-03 11:39:00",
+        "end_time": "2018-08-03 11:39:02",
+        "result": True,
+        "remarks": "iok",
+        "YML_input": "job: exception: raise execution: sequential name: string change package: iok",
+        "log_output": {
+            "Clone Repository": {
+                "2018-08-03 11:39:01.006607": "Start cloning https://pagure.io/iok.git repository.",
+                "2018-08-03 11:39:01.730884": " :: Cloning git repo completed., .git, "
+            },
+            "Generate POT File": {
+                "2018-08-03 11:39:02.022360": " :: POT file generated successfully. [ iok.pot ], "
+            },
+            "Calculate Differences": {
+                "2018-08-03 11:39:02.142378": "No new or updated messages found."
+            },
+            "Download platform POT file": {
+                "2018-08-03 11:39:02.134145": "POT downloaded successfully. "
+                                              "URL: https://fedora.../pot?docId=iok"
+            }
+        }
     }
     return mock_rep
