@@ -63,8 +63,7 @@ class ConsumeAPIs(object):
         head = {'Authorization': 'token {}'.format(self._read_token()),
                 'Content-Type': 'application/json'}
         try:
-            response = requests.post(self.base_URL +
-                                     self.middle_URL + endpoint,
+            response = requests.post(self.base_URL + self.middle_URL + endpoint,
                                      headers=head, data=json.dumps(payload))
         except Exception:
             return self.ERR_JSON

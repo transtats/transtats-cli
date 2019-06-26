@@ -75,7 +75,7 @@ def release(app_context, server_url, detail, release_slug, locale, json):
 @click.argument('graph-rule')
 @click.pass_obj
 def coverage(app_context, server_url, graph_rule, json):
-    """Translation coverage as per graph rule.
+    """Translation coverage as per coverage rule.
        e.g. transtats coverage rhinstaller """
 
     api_obj = ConsumeAPIs(server_url or app_context.server_url) if json \
