@@ -75,29 +75,34 @@ class TextOutputAPIs(object):
         """
         Fetch graph rule coverage
         """
-        table_headers = ["Package", "Completed %"]
-        json_data = self.raw_data.rule_coverage(graph_rule)
+        table_headers = ["Language", "Statistics (messages)"]
+        json_data = self.raw_data.rule_coverage(graph_rule).get('coverage', {})
 
-        rule = list(json_data.values())[0]
-        if rule == "Not Found":
-            print("Rule does not exist, Please enter valid graph rule name.")
-            return
+        if json_data:
+            if json_data == "Not Found":
+                print("Rule does not exist, Please enter valid rule name.")
+                return
 
-        for key, value in rule.items():
-            if key == "branch":
-                branch_info = value
-            if key == "translation_stats":
-                lang_stats = value
-            if key == "graph_rule":
-                rule_name = value
-
-        print("Graph Rule : {0}".format(rule_name))
-        print("Branch : {0}".format(branch_info))
-        print("")
-        for lang_name, pkg_stats in lang_stats.items():
-            print("Language : {0}".format(lang_name))
-            print(tabulate(sorted(pkg_stats.items()), table_headers))
+            if json_data.get('coverage_rule'):
+                print("Coverage Rule : {0}".format(json_data['coverage_rule']))
+                json_data.pop('coverage_rule')
+            if json_data.get('release'):
+                print("Branch : {0}".format(json_data['release']))
+                json_data.pop('release')
             print("")
+            for package_name, source_n_stats in json_data.items():
+                print("Package : {0}".format(package_name))
+                print("")
+                for source, lang_stats in source_n_stats.items():
+                    print("Source : {0}".format(source))
+                    if source == 'translation_platform':
+                        print(tabulate(sorted(lang_stats.items()), table_headers))
+                        print("")
+                    if source == 'build_system':
+                        for tag, stats in lang_stats.items():
+                            print("Build Tag : {0}".format(tag))
+                            print(tabulate(sorted(stats.items()), table_headers))
+                    print("")
 
         return
 
