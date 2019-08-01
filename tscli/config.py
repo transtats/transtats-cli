@@ -57,7 +57,7 @@ def get_config_item(config, section, item):
     """
     try:
         return config.get(section, item)
-    except (configparser.NoOptionError, configparser.NoSectionError):
-        error_msg = ('The item "{0}" is not set in the "{1}" section '
+    except (configparser.NoOptionError, configparser.NoSectionError, configparser.InterpolationSyntaxError):
+        error_msg = ('The item "{0}" is not set correctly in the "{1}" section '
                      'in your config file.'.format(item, section))
         raise click.ClickException(error_msg)

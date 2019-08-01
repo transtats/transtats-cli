@@ -51,7 +51,56 @@ def mock_package_status():
     return mock_rep
 
 
-def mock_rule_coverage():
+def mock_package_status_exist():
+    """
+    package_status_exist mock value
+    """
+    mock_rep = Mock()
+    mock_rep.ok = True
+    mock_rep.json.return_value = {
+        "gnome-shell": True
+    }
+    return mock_rep
+
+
+def mock_package_status_health():
+    """
+    package_status_health mock value
+    """
+    mock_rep = Mock()
+    mock_rep.ok = True
+    mock_rep.json.return_value = {
+     "abrt": {
+        "fedora-30": {
+            "Arabic": 2,
+            "Basque": 3,
+            "Esperanto": 7,
+            "Friulian": 24,
+            "Serbian": 14,
+            "Turkish": 13,
+            "Urdu": 3
+        },
+        "fedora-31": {
+            "Friulian": 24
+        }
+      }
+    }
+    return mock_rep
+
+
+def mock_package_status_health_in_sync():
+    """
+    package_status_health mock value
+    """
+    mock_rep = Mock()
+    mock_rep.ok = True
+    mock_rep.json.return_value = {
+        "authconfig": "Translation platform statistics are in sync with the build system."
+    }
+    return mock_rep
+
+
+def mock_coverage_rule():
     """
     rule_coverage mock value
     """

@@ -1,5 +1,5 @@
 .\" transtats - Command line interface for transtats
-.TH "TRANSTATS" "1" "August 2018" "transtats 0.2.0" "User Commands"
+.TH "TRANSTATS" "1" "August 2018-2019" "transtats 0.3.0" "User Commands"
 .SH "NAME"
 transtats \- Command line interface for transtats
 .SH "SYNOPSIS"
@@ -45,16 +45,24 @@ Show this message and exit.
 
 .PP
    \fBTo check the translation status of any partiular package for all the available release branches on transtats server.\fP
-   transtats package anaconda
+   transtats package abrt
+
+.PP
+   \fBTo check the if package exists on the transtats server.\fP
+   transtats package --exist abrt
+
+.PP
+   \fBTo check the translation health of any partiular package for all the available release branches on transtats server.\fP
+   transtats package --health abrt
 
 .PP
    \fBTo check the translation status for available packages in any pre-defined Linux distribution release on transtats server.\fP
-   transtats release fedora-27
+   transtats release fedora-31
 
 .PP
    \fBTo check the translation status for available packages in any pre-defined Linux distribution release on transtats server.\fP
    \fBBut if you need to know this status categorized by individual languages then use --detail\fP
-   transtats release --detail fedora-27
+   transtats release --detail fedora-31
 
 .PP
    \fBTo know the version of this transtats client.\fP
@@ -69,8 +77,8 @@ Show this message and exit.
       These job types are syncupstream, syncdownstream, stringchange.
       Various job type command examples are given below
       transtats job run stringchange anaconda
-      transtats job run syncdownstream anaconda --build-system koji --build-tag f29
-      transtats job run stringchange anaconda --release-slug fedora-29
+      transtats job run syncdownstream anaconda --build-system koji --build-tag f31
+      transtats job run stringchange anaconda --release-slug fedora-31
 
 .SH "NOTES"
    These commands give output in plain text format. If you need the same output
