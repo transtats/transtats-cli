@@ -33,7 +33,7 @@ class TestTranstatsCLI(TestCase):
     def tearDown(self):
         del os.environ["TRANSTATS_TEST_CONFIG"]
 
-    def test_cli_version(self):
+    def test_version_cli(self):
         """
         transtats version
         """
@@ -60,7 +60,7 @@ class TestTranstatsCLI(TestCase):
 
     def test_package_status(self):
         """
-        transtats status <package>
+        transtats package <package>
         """
         from tscli import entry_point
 
@@ -74,7 +74,55 @@ class TestTranstatsCLI(TestCase):
             self.assertIn('Branch', result.output)
             self.assertIn('percentage_calculated_on', result.output)
 
-    def test_rule_coverage(self):
+    def test_package_status_exist(self):
+        """
+        transtats package --exist <package>
+        """
+        from tscli import entry_point
+
+        with patch('requests.get') as mock_request_get:
+            mock_request_get.return_value = \
+                test_data.mock_package_status_exist()
+            runner = CliRunner()
+            result = runner.invoke(entry_point, ['package', '--exist',
+                                                 '--json', 'gnome-shell'])
+            self.assertEqual(result.exit_code, 0)
+            self.assertIn('gnome-shell', result.output)
+            self.assertIn('true', result.output)
+
+    def test_package_status_health(self):
+        """
+        transtats package --health <package>
+        """
+        from tscli import entry_point
+
+        with patch('requests.get') as mock_request_get:
+            mock_request_get.return_value = \
+                test_data.mock_package_status_health()
+            runner = CliRunner()
+            result = runner.invoke(entry_point, ['package', '--health',
+                                                 '--json', 'abrt'])
+            self.assertEqual(result.exit_code, 0)
+            self.assertIn('abrt', result.output)
+            self.assertIn('fedora-30', result.output)
+
+    def test_package_status_health_in_sync(self):
+        """
+        transtats package --health <package>
+        """
+        from tscli import entry_point
+
+        with patch('requests.get') as mock_request_get:
+            mock_request_get.return_value = \
+                test_data.mock_package_status_health_in_sync()
+            runner = CliRunner()
+            result = runner.invoke(entry_point, ['package', '--health',
+                                                 '--json', 'authconfig'])
+            self.assertEqual(result.exit_code, 0)
+            self.assertIn('authconfig', result.output)
+            self.assertIn('are in sync', result.output)
+
+    def test_coverage_rule(self):
         """
         transtats coverage <graph_rule>
         """
@@ -82,7 +130,7 @@ class TestTranstatsCLI(TestCase):
 
         with patch('requests.get') as mock_request_get:
             mock_request_get.return_value = \
-                test_data.mock_rule_coverage()
+                test_data.mock_coverage_rule()
             runner = CliRunner()
             result = runner.invoke(entry_point, ['coverage', 'rhinstaller'])
             self.assertEqual(result.exit_code, 0)

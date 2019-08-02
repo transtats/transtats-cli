@@ -1,4 +1,4 @@
-# Copyright 2017, 2018 Red Hat, Inc.
+# Copyright 2017-2019 Red Hat, Inc.
 # All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
@@ -79,18 +79,23 @@ class ConsumeAPIs(object):
         ENDPOINT = "/ping"
         return self._call_api(ENDPOINT)
 
-    def package_status(self, package):
+    def package_status(self, package, exist=None, health=None):
         """
         Fetch package status
         """
         ENDPOINT = "/package/" + package
+        if exist:
+            ENDPOINT = ENDPOINT + "/exist"
+        elif health:
+            ENDPOINT = ENDPOINT + "/health"
+
         return self._call_api(ENDPOINT)
 
-    def rule_coverage(self, graph_rule):
+    def rule_coverage(self, coverage_rule):
         """
         Fetch graph rule coverage
         """
-        ENDPOINT = "/coverage/" + graph_rule
+        ENDPOINT = "/coverage/" + coverage_rule
         return self._call_api(ENDPOINT)
 
     def release_status(self, release, locale=None, detail=None):

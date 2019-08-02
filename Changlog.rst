@@ -1,6 +1,15 @@
 Changelog
 =========
 
+0.3.0 (2019-08-02)
+-----------------
+- Add new options exist and health to package command (pnemade)
+- update the man page for package command enhancement (pnemade)
+- Added new coverage formats in coverage command (suanand)
+- Changed "graph_rule" to "coverage_rule" (pnemade)
+- Added validation checks to check if server is responding or not (pnemade)
+- Updated test cases to accommodate above changes (pnemade)
+
 0.2.0 (2018-08-04)
 -----------------
 -  Add partial bash-completion support for job command (pnemade)
