@@ -1,4 +1,4 @@
-# Copyright 2017, 2018 Red Hat, Inc.
+# Copyright 2017-2019 Red Hat, Inc.
 # All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
@@ -35,6 +35,10 @@ class TextOutputAPIs(object):
         """
         dict_data = self.raw_data.server_version
         for machine_name, machine_value in dict_data.items():
+            if machine_name == "Error":
+                print("Could not receive a response from the server")
+                return
+
             if machine_value == "Not Found":
                 print("Server version information is not available")
                 return
@@ -43,61 +47,121 @@ class TextOutputAPIs(object):
                     "".join(machine_value.split()[1:])))
         return
 
-    def package_status(self, package):
+    def package_status(self, package, exist=None, health=None):
         """
         Fetch package status
         """
         table_headers = ["Language", "Completion %"]
-        json_data = self.raw_data.package_status(package)
+        diff_table_headers = ["Language", "Difference %"]
 
-        # Get key pkg_name and its value
-        for pkg_name, pkg_value in json_data.items():
-            if pkg_value == "Not Found":
-                print("Package not available on transtats server")
-                return
-            print("Package : {0}".format(pkg_name))
+        if exist:
+            json_data = self.raw_data.package_status(package, exist=True,
+                                                     health=None)
 
-            for lvl2_name, lvl2_value in pkg_value.items():
-                # This gives language and its status percentage
-                if isinstance(lvl2_value, dict):
-                    print("")
-                    for b_keys, b_values in lvl2_value.items():
-                        print("Branch : {0}".format(b_keys))
-                        print(tabulate(sorted(b_values.items()),
-                                       table_headers))
-                        print("")
+            for pkg_name, pkg_value in json_data.items():
+                if pkg_name == "Error":
+                    print("Could not receive a response from the server")
+                    return
+
+                if pkg_value:
+                    print("{0} package exists.".format(pkg_name))
+                    return
                 else:
-                    print("{0}: {1}".format(lvl2_name, lvl2_value))
+                    print("{0} package not available on transtats server".format(pkg_name))
+                    return
+        elif health:
+            json_data = self.raw_data.package_status(package, exist=None,
+                                                     health=True)
+
+            for pkg_name, pkg_value in json_data.items():
+                if pkg_name == "Error":
+                    print("Could not receive a response from the server")
+                    return
+
+                if pkg_value == "Not found":
+                    print("{0} package not available on transtats server".format(pkg_name))
+                    return
+
+                if type(pkg_value) != dict:
+                    print("Translation platform statistics are in sync with the build system")
+                    return
+
+                print("Please note below is translation difference percentage for each language")
+                print("1. Translation difference of 0% mean those languages")
+                print("   are not 100% translated on build system")
+                print("2. Translation difference of more than 0% mean those languages have got")
+                print("   update in translation platform which are not yet built on build system")
+                for lvl2_name, lvl2_value in pkg_value.items():
+                    # This gives language and its health percentage
+                    print("Branch : {0}".format(lvl2_name))
+                    if isinstance(lvl2_value, dict):
+                        print(tabulate(sorted(lvl2_value.items()),
+                                       diff_table_headers))
+                        print("")
+                    else:
+                        print("{0}: {1}".format(lvl2_name, lvl2_value))
+
+        else:
+            json_data = self.raw_data.package_status(package, exist=None,
+                                                     health=None)
+
+            # Get key pkg_name and its value
+            for pkg_name, pkg_value in json_data.items():
+                if pkg_name == "Error":
+                    print("Could not receive a response from the server")
+                    return
+
+                if pkg_value == "Not Found":
+                    print("{0} package not available on transtats server".format(pkg_name))
+                    return
+                print("Package : {0}".format(pkg_name))
+
+                for lvl2_name, lvl2_value in pkg_value.items():
+                    # This gives language and its status percentage
+                    if isinstance(lvl2_value, dict):
+                        print("")
+                        for b_keys, b_values in lvl2_value.items():
+                            print("Branch : {0}".format(b_keys))
+                            print(tabulate(sorted(b_values.items()),
+                                           table_headers))
+                            print("")
+                    else:
+                        print("{0}: {1}".format(lvl2_name, lvl2_value))
 
         return
 
-    def rule_coverage(self, graph_rule):
+    def rule_coverage(self, coverage_rule):
         """
         Fetch graph rule coverage
         """
-        table_headers = ["Package", "Completed %"]
-        json_data = self.raw_data.rule_coverage(graph_rule)
+        table_headers = ["Language", "Statistics (messages)"]
+        json_data = self.raw_data.rule_coverage(coverage_rule).get('coverage', {})
 
-        rule = list(json_data.values())[0]
-        if rule == "Not Found":
-            print("Rule does not exist, Please enter valid graph rule name.")
-            return
+        if json_data:
+            if json_data == "Not Found":
+                print("Rule does not exist, Please enter valid rule name.")
+                return
 
-        for key, value in rule.items():
-            if key == "branch":
-                branch_info = value
-            if key == "translation_stats":
-                lang_stats = value
-            if key == "graph_rule":
-                rule_name = value
-
-        print("Graph Rule : {0}".format(rule_name))
-        print("Branch : {0}".format(branch_info))
-        print("")
-        for lang_name, pkg_stats in lang_stats.items():
-            print("Language : {0}".format(lang_name))
-            print(tabulate(sorted(pkg_stats.items()), table_headers))
+            if json_data.get('coverage_rule'):
+                print("Coverage Rule : {0}".format(json_data['coverage_rule']))
+                json_data.pop('coverage_rule')
+            if json_data.get('release'):
+                print("Branch : {0}".format(json_data['release']))
+                json_data.pop('release')
             print("")
+            for package_name, source_n_stats in json_data.items():
+                print("Package : {0}".format(package_name))
+                print("")
+                for source, lang_stats in source_n_stats.items():
+                    print("Source : {0}".format(source))
+                    if source == 'translation_platform':
+                        print(tabulate(sorted(lang_stats.items()), table_headers))
+                        print("")
+                    if source == 'build_system':
+                        for tag, stats in lang_stats.items():
+                            print("Build Tag : {0}".format(tag))
+                            print(tabulate(sorted(stats.items()), table_headers))
+                    print("")
 
         return
 
@@ -115,6 +179,10 @@ class TextOutputAPIs(object):
                                                      detail=True)
 
             for lang_name, pkg_stats in json_data.items():
+                if lang_name == "Error":
+                    print("Could not receive a response from the server")
+                    return
+
                 if pkg_stats == "Release not found":
                     print("Release does not exist, Please enter "
                           "valid release name.")
@@ -150,6 +218,10 @@ class TextOutputAPIs(object):
             print_data = []
             not_a_pkg_elements = ("Calculated on", "locale")
 
+            if rel_slug == "Error":
+                print("Could not receive a response from the server")
+                return
+
             if type(pkg_stats) == str:
                 print("Either release " + release + " does not exists or "
                       "locale " + locale + " does not belong to "
@@ -177,6 +249,11 @@ class TextOutputAPIs(object):
 
             rel_slug = list(json_data.keys())[0]
             rel_data = list(json_data.values())[0]
+
+            if rel_slug == "Error":
+                print("Could not receive a response from the server")
+                return
+
             if rel_data == "Release not found":
                 print("Release does not exist, Please enter valid "
                       "release name.")

@@ -51,7 +51,56 @@ def mock_package_status():
     return mock_rep
 
 
-def mock_rule_coverage():
+def mock_package_status_exist():
+    """
+    package_status_exist mock value
+    """
+    mock_rep = Mock()
+    mock_rep.ok = True
+    mock_rep.json.return_value = {
+        "gnome-shell": True
+    }
+    return mock_rep
+
+
+def mock_package_status_health():
+    """
+    package_status_health mock value
+    """
+    mock_rep = Mock()
+    mock_rep.ok = True
+    mock_rep.json.return_value = {
+     "abrt": {
+        "fedora-30": {
+            "Arabic": 2,
+            "Basque": 3,
+            "Esperanto": 7,
+            "Friulian": 24,
+            "Serbian": 14,
+            "Turkish": 13,
+            "Urdu": 3
+        },
+        "fedora-31": {
+            "Friulian": 24
+        }
+      }
+    }
+    return mock_rep
+
+
+def mock_package_status_health_in_sync():
+    """
+    package_status_health mock value
+    """
+    mock_rep = Mock()
+    mock_rep.ok = True
+    mock_rep.json.return_value = {
+        "authconfig": "Translation platform statistics are in sync with the build system."
+    }
+    return mock_rep
+
+
+def mock_coverage_rule():
     """
     rule_coverage mock value
     """
@@ -59,22 +108,43 @@ def mock_rule_coverage():
     mock_rep.ok = True
     mock_rep.json.return_value = {
         "coverage": {
-            "branch": "Fedora 27",
-            "translation_stats": {
-                "Chinese (Simplified)": {
-                    "python-meh": 100.0,
-                    "anaconda": 98.92,
-                    "pykickstart": 100.0,
-                    "blivet": 100.0
+            "evolution": {
+                "translation_platform": {
+                    "German": {
+                        "Total": 5600,
+                        "Translated": 5482,
+                        "Untranslated": 102,
+                        "Remaining": 1.82
+                    },
                 },
-                "German": {
-                    "python-meh": 100.0,
-                    "anaconda": 99.25,
-                    "pykickstart": 93.71,
-                    "blivet": 100.0
+                "build_system": {
+                    "f30": {
+                        "German": {
+                            "Total": 1841,
+                            "Translated": 1841,
+                            "Untranslated": 0,
+                            "Remaining": 0
+                        },
+                    }
                 }
             },
-            "graph_rule": "rhinstaller"
+            "libuser": {
+                "translation_platform": {
+                    "German": {
+                        "Total": 301,
+                        "Translated": 301,
+                        "Untranslated": 0,
+                        "Remaining": 0
+                    },
+                },
+                "build_system": {
+                    "f30": {
+                        "Statistics": "Not Synced with Build System for f30"
+                    }
+                }
+            },
+            "release": "fedora-30",
+            "coverage_rule": "rhinstaller"
         }
     }
     return mock_rep
@@ -171,6 +241,18 @@ def mock_release_workload_detail():
             "Calculated on": "Messages"
         },
         "Release": "fedora-27",
+    }
+    return mock_rep
+
+
+def mock_package_exists():
+    """
+    package_exists mock value
+    """
+    mock_rep = Mock()
+    mock_rep.ok = True
+    mock_rep.json.return_value = {
+        "iok": True
     }
     return mock_rep
 

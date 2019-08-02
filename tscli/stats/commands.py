@@ -1,4 +1,4 @@
-# Copyright 2017, 2018 Red Hat, Inc.
+# Copyright 2017-2019 Red Hat, Inc.
 # All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
@@ -21,17 +21,26 @@ from tscli.textoutput import TextOutputAPIs
 @click.command()
 @click.option(
     '--server-url', envvar='TRANSTATS_SERVER', help="Transtats Server URL")
+@click.option("--exist", is_flag=True,
+              help="Determine if the package exist in Transtats or not.")
+@click.option("--health", is_flag=True,
+              help="Get package health")
 @click.option(
     '--json', is_flag=True, envvar='JSON_OUTPUT', help="Print in JSON format")
 @click.argument('package-name')
 @click.pass_obj
-def package(app_context, server_url, package_name, json):
+def package(app_context, server_url, package_name, exist, health, json):
     """Translation status of a package.
        e.g. transtats package anaconda """
     api_obj = ConsumeAPIs(server_url or app_context.server_url) if json \
         else TextOutputAPIs(server_url or app_context.server_url)
 
-    response = api_obj.package_status(package_name)
+    if exist:
+        response = api_obj.package_status(package_name, exist=True, health=None)
+    elif health:
+        response = api_obj.package_status(package_name, exist=None, health=True)
+    else:
+        response = api_obj.package_status(package_name, exist=None, health=None)
     if isinstance(response, dict):
         app_context.print_r(response)
 
@@ -72,15 +81,15 @@ def release(app_context, server_url, detail, release_slug, locale, json):
     '--server-url', envvar='TRANSTATS_SERVER', help="Transtats Server URL")
 @click.option(
     '--json', is_flag=True, envvar='JSON_OUTPUT', help="Print in JSON format")
-@click.argument('graph-rule')
+@click.argument('coverage-rule')
 @click.pass_obj
-def coverage(app_context, server_url, graph_rule, json):
-    """Translation coverage as per graph rule.
+def coverage(app_context, server_url, coverage_rule, json):
+    """Translation coverage as per coverage rule.
        e.g. transtats coverage rhinstaller """
 
     api_obj = ConsumeAPIs(server_url or app_context.server_url) if json \
         else TextOutputAPIs(server_url or app_context.server_url)
 
-    response = api_obj.rule_coverage(graph_rule)
+    response = api_obj.rule_coverage(coverage_rule)
     if isinstance(response, dict):
         app_context.print_r(response)
