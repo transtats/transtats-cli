@@ -23,7 +23,6 @@ setup(
     url="http://transtats.org",
     license="Apache License 2.0",
     install_requires=REQUIRE,
-    setup_requires=["flake8"],
     test_suite="tests.tscli_test_suit",
     scripts=["transtats"],
     data_files=[('/usr/share/man/man1', ['docs/man/transtats.1']),
