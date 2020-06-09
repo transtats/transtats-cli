@@ -1,6 +1,10 @@
 Changelog
 =========
 
+0.4.0 (2020-07-09)
+-----------------
+- Dropping flake8 dependency (pnemade)
+
 0.3.0 (2019-08-02)
 -----------------
 - Add new options exist and health to package command (pnemade)
