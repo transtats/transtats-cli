@@ -116,8 +116,8 @@ class ConsumeAPIs(object):
         ENDPOINT = "/job/" + job_id + "/log"
         return self._call_api(ENDPOINT)
 
-    def job_run(self, job_type, package_name, build_system=None,
-                build_tag=None, release_slug=None):
+    def job_run(self, job_type, package_name, build_system=None, build_tag=None,
+                release_slug=None, repo_type=None, repo_branch=None):
         """
         Submit the job for the given job type and package name
         """
@@ -126,7 +126,8 @@ class ConsumeAPIs(object):
         pkg_exists = self._call_api(_ENDPOINT)
         if list(pkg_exists.values())[0]:
             if job_type == "syncupstream":
-                payload = {'job_type': job_type, 'package_name': package_name}
+                payload = {'job_type': job_type, 'package_name': package_name,
+                           'repo_type': repo_type, 'repo_branch': repo_branch}
             elif job_type == "syncdownstream":
                 payload = {'job_type': job_type, 'package_name': package_name,
                            'build_system': build_system,

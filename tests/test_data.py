@@ -70,20 +70,20 @@ def mock_package_status_health():
     mock_rep = Mock()
     mock_rep.ok = True
     mock_rep.json.return_value = {
-     "abrt": {
-        "fedora-30": {
-            "Arabic": 2,
-            "Basque": 3,
-            "Esperanto": 7,
-            "Friulian": 24,
-            "Serbian": 14,
-            "Turkish": 13,
-            "Urdu": 3
-        },
-        "fedora-31": {
-            "Friulian": 24
+        "abrt": {
+            "fedora-30": {
+                "Arabic": 2,
+                "Basque": 3,
+                "Esperanto": 7,
+                "Friulian": 24,
+                "Serbian": 14,
+                "Turkish": 13,
+                "Urdu": 3
+            },
+            "fedora-31": {
+                "Friulian": 24
+            }
         }
-      }
     }
     return mock_rep
 
@@ -257,7 +257,21 @@ def mock_package_exists():
     return mock_rep
 
 
-def mock_job_run():
+def mock_job_run_syncupstream():
+    """
+    job_run mock value
+    """
+    mock_rep = Mock()
+    mock_rep.ok = True
+    mock_rep.json.return_value = {
+        "Success": "Job created and logged. "
+                   "URL: http://localhost:8080/jobs/log/e41ee603-9bdc-4640-83f3-aa8c82263831/detail",
+        "job_id": "e41ee603-9bdc-4640-83f3-aa8c82263831"
+    }
+    return mock_rep
+
+
+def mock_job_run_stringchange():
     """
     job_run mock value
     """

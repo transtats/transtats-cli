@@ -34,20 +34,24 @@ def job():
               help="build tag like f29")
 @click.option("--release-slug", is_flag=False,
               help="release name like fedora-29")
+@click.option("--repo-type", is_flag=False,
+              help="repo type like default or l10n")
+@click.option("--repo-branch", is_flag=False,
+              help="repository branch like master")
 @click.option(
     '--json', is_flag=True, envvar='JSON_OUTPUT', help="Print in JSON format")
 @click.argument('job_type')
 @click.argument('package_name')
 @click.pass_obj
 def run(app_context, server_url, token, job_type, package_name, build_system,
-        build_tag, release_slug, json):
+        build_tag, release_slug, repo_type, repo_branch, json):
     """Runs a job and/or show the job log. Available job-types are
        syncupstream, syncdownstream, stringchange."""
     api_obj = ConsumeAPIs(server_url or app_context.server_url) if json \
         else TextOutputAPIs(server_url or app_context.server_url)
 
     response = api_obj.job_run(job_type, package_name, build_system,
-                               build_tag, release_slug)
+                               build_tag, release_slug, repo_type, repo_branch)
     if isinstance(response, dict):
         app_context.print_r(response)
 
