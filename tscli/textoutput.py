@@ -336,13 +336,13 @@ class TextOutputAPIs(object):
         return
 
     def job_run(self, job_type, package_name, build_system, build_tag,
-                release_slug):
+                release_slug, repo_type, repo_branch):
         """
         Submit the job for the given job type and package name
         """
 
         json_data = self.raw_data.job_run(job_type, package_name, build_system,
-                                          build_tag, release_slug)
+                                          build_tag, release_slug, repo_type, repo_branch)
 
         first_key = list(json_data.keys())[0]
         if first_key == "detail":
