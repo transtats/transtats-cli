@@ -1,4 +1,6 @@
 [![Build Status](https://travis-ci.org/transtats/transtats-cli.svg?branch=devel)](https://travis-ci.org/transtats/transtats-cli)
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/transtats/transtats-cli.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/transtats/transtats-cli/alerts/)
+[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/transtats/transtats-cli.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/transtats/transtats-cli/context:python)
 
 # transtats-cli
 Transtats command line interface to query transtats server.
