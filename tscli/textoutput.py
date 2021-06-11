@@ -324,8 +324,8 @@ class TextOutputAPIs(object):
                     if log_key == 'Clone Repository':
                         crepo = log_out[log_key]
                         print("\nClone Repository: ")
-                        for key, value in crepo.items():
-                            print("{0} {1}".format(key, value))
+                        for k, v in crepo.items():
+                            print("{0} {1}".format(k, v))
                     if log_key == 'Filter PO files':
                         filter_po_files = log_out[log_key]
                         print("Filter PO files: ")
