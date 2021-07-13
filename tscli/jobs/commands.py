@@ -37,7 +37,7 @@ def job():
 @click.option("--repo-type", is_flag=False,
               help="repo type like default or l10n")
 @click.option("--repo-branch", is_flag=False,
-              help="repository branch like master")
+              help="repository branch like main")
 @click.option(
     '--json', is_flag=True, envvar='JSON_OUTPUT', help="Print in JSON format")
 @click.argument('job_type')
