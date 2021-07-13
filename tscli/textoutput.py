@@ -324,8 +324,8 @@ class TextOutputAPIs(object):
                     if log_key == 'Clone Repository':
                         crepo = log_out[log_key]
                         print("\nClone Repository: ")
-                        for key, value in crepo.items():
-                            print("{0} {1}".format(key, value))
+                        for k, v in crepo.items():
+                            print("{0} {1}".format(k, v))
                     if log_key == 'Filter PO files':
                         filter_po_files = log_out[log_key]
                         print("Filter PO files: ")
@@ -336,13 +336,13 @@ class TextOutputAPIs(object):
         return
 
     def job_run(self, job_type, package_name, build_system, build_tag,
-                release_slug):
+                release_slug, repo_type, repo_branch):
         """
         Submit the job for the given job type and package name
         """
 
         json_data = self.raw_data.job_run(job_type, package_name, build_system,
-                                          build_tag, release_slug)
+                                          build_tag, release_slug, repo_type, repo_branch)
 
         first_key = list(json_data.keys())[0]
         if first_key == "detail":

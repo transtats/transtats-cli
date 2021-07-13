@@ -1,6 +1,13 @@
 Changelog
 =========
 
+0.5.0 (2020-07-12)
+-----------------
+- Update textoutput.py (sundeep-co-in)
+- Add new options repo-type and repo-branch to job run command (sundeep-co-in)
+- Update man page (pnemade)
+- Change Problematic language in code (pnemade)
+
 0.4.0 (2020-07-09)
 -----------------
 - Dropping flake8 dependency (pnemade)

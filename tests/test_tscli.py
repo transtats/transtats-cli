@@ -203,7 +203,27 @@ class TestTranstatsCLI(TestCase):
             self.assertIn('Calculated on', result.output)
             self.assertIn('Locale', result.output)
 
-    def test_job_run(self):
+    def test_job_run_upstream(self):
+        """
+        transtats job run --repo-type=<type> --repo-branch=<branch> <job-type> <package>
+        """
+        from tscli import entry_point
+
+        with patch('requests.get') as mock_request_get:
+            with patch('requests.post') as mock_request_post:
+                mock_request_get.return_value = \
+                    test_data.mock_package_exists()
+                mock_request_post.return_value = \
+                    test_data.mock_job_run_syncupstream()
+                runner = CliRunner()
+                result = runner.invoke(entry_point,
+                                       ['job', 'run', '--repo-type', 'l10n',
+                                        '--repo-branch', 'main', 'syncupstream', 'iok'])
+                self.assertEqual(result.exit_code, 0)
+                self.assertIn('Success', result.output)
+                self.assertIn('Job_Id', result.output)
+
+    def test_job_run_stringchange(self):
         """
         transtats job run <job-type> <package> --release-slug <release>
         """
@@ -214,7 +234,7 @@ class TestTranstatsCLI(TestCase):
                 mock_request_get.return_value = \
                     test_data.mock_package_exists()
                 mock_request_post.return_value = \
-                    test_data.mock_job_run()
+                    test_data.mock_job_run_stringchange()
                 runner = CliRunner()
                 result = runner.invoke(entry_point,
                                        ['job', 'run', 'stringchange', 'iok',
