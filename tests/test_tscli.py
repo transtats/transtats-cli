@@ -218,7 +218,7 @@ class TestTranstatsCLI(TestCase):
                 runner = CliRunner()
                 result = runner.invoke(entry_point,
                                        ['job', 'run', '--repo-type', 'l10n',
-                                        '--repo-branch', 'master', 'syncupstream', 'iok'])
+                                        '--repo-branch', 'main', 'syncupstream', 'iok'])
                 self.assertEqual(result.exit_code, 0)
                 self.assertIn('Success', result.output)
                 self.assertIn('Job_Id', result.output)
