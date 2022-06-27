@@ -60,7 +60,7 @@ class TestTranstatsCLI(TestCase):
 
     def test_package_status(self):
         """
-        transtats package <package>
+        transtats package stats <package>
         """
         from tscli import entry_point
 
@@ -68,7 +68,7 @@ class TestTranstatsCLI(TestCase):
             mock_request_get.return_value = \
                 test_data.mock_package_status()
             runner = CliRunner()
-            result = runner.invoke(entry_point, ['package', 'systemd'])
+            result = runner.invoke(entry_point, ['package', 'stats', 'systemd'])
             self.assertEqual(result.exit_code, 0)
             self.assertIn('systemd', result.output)
             self.assertIn('Branch', result.output)
@@ -76,7 +76,7 @@ class TestTranstatsCLI(TestCase):
 
     def test_package_status_exist(self):
         """
-        transtats package --exist <package>
+        transtats package --exist stats <package>
         """
         from tscli import entry_point
 
@@ -84,15 +84,15 @@ class TestTranstatsCLI(TestCase):
             mock_request_get.return_value = \
                 test_data.mock_package_status_exist()
             runner = CliRunner()
-            result = runner.invoke(entry_point, ['package', '--exist',
-                                                 '--json', 'gnome-shell'])
+            result = runner.invoke(entry_point, ['package', 'stats', '--exist',
+                                                 'gnome-shell', '--json'])
             self.assertEqual(result.exit_code, 0)
             self.assertIn('gnome-shell', result.output)
             self.assertIn('true', result.output)
 
     def test_package_status_health(self):
         """
-        transtats package --health <package>
+        transtats package --health stats <package>
         """
         from tscli import entry_point
 
@@ -100,15 +100,15 @@ class TestTranstatsCLI(TestCase):
             mock_request_get.return_value = \
                 test_data.mock_package_status_health()
             runner = CliRunner()
-            result = runner.invoke(entry_point, ['package', '--health',
-                                                 '--json', 'abrt'])
+            result = runner.invoke(entry_point, ['package', 'stats', '--health',
+                                                 'abrt', '--json'])
             self.assertEqual(result.exit_code, 0)
             self.assertIn('abrt', result.output)
             self.assertIn('fedora-30', result.output)
 
     def test_package_status_health_in_sync(self):
         """
-        transtats package --health <package>
+        transtats package --health stats <package>
         """
         from tscli import entry_point
 
@@ -116,8 +116,8 @@ class TestTranstatsCLI(TestCase):
             mock_request_get.return_value = \
                 test_data.mock_package_status_health_in_sync()
             runner = CliRunner()
-            result = runner.invoke(entry_point, ['package', '--health',
-                                                 '--json', 'authconfig'])
+            result = runner.invoke(entry_point, ['package', 'stats', '--health',
+                                                 'authconfig', '--json'])
             self.assertEqual(result.exit_code, 0)
             self.assertIn('authconfig', result.output)
             self.assertIn('are in sync', result.output)
