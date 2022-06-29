@@ -26,7 +26,7 @@ class ConsumeAPIs(object):
     base_URL = None
     middle_URL = "api"
 
-    ERR_JSON = {"Error": "Some thing unexpected happened."}
+    ERR_JSON = {"Error": "Something unexpected happened."}
 
     def __init__(self, base_url):
         """
@@ -68,7 +68,7 @@ class ConsumeAPIs(object):
         except Exception:
             return self.ERR_JSON
 
-        return response.json()
+        return response.json() if response.ok else self.ERR_JSON
 
     @property
     def server_version(self):
@@ -139,5 +139,19 @@ class ConsumeAPIs(object):
                 return {"job_type": "Invalid job type"}
         else:
             return {"pkg_error": "Given package does not exists"}
+
+        return self._send_api(ENDPOINT, payload)
+
+    def add_package(self, package_name, upstream_url, transplatform_slug, release_stream):
+        """
+        Create a new package at Transtats Server
+        """
+        ENDPOINT = "/package/create"
+        payload = {
+            "package_name": package_name,
+            "upstream_url": upstream_url or "",
+            "transplatform_slug": transplatform_slug or "",
+            "release_streams": release_stream or ""
+        }
 
         return self._send_api(ENDPOINT, payload)

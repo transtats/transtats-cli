@@ -61,7 +61,7 @@ def add(app_context, server_url, token, package_name, upstream_url,
     '--json', is_flag=True, envvar='JSON_OUTPUT', help="Print in JSON format")
 @click.argument('package-name')
 @click.pass_obj
-def stats(app_context, server_url, package_name, exist, health, json):
+def status(app_context, server_url, package_name, exist, health, json):
     """Translation status of a package.
        e.g. transtats package anaconda """
     api_obj = ConsumeAPIs(server_url or app_context.server_url) if json \
