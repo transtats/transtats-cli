@@ -386,3 +386,13 @@ class TextOutputAPIs(object):
 
         print("\n".join([": ".join([key.title(), value]) for key, value in json_data.items()]))
         return
+
+    def add_package(self, package_name, upstream_url, transplatform_slug, release_stream):
+        """
+        Create a new package at Transtats Server
+        """
+        json_data = self.raw_data.add_package(package_name, upstream_url,
+                                              transplatform_slug, release_stream)
+        for k, v in json_data.items():
+            print("{}: {}".format(k, v))
+        return

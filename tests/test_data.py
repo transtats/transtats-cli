@@ -100,6 +100,18 @@ def mock_package_status_health_in_sync():
     return mock_rep
 
 
+def mock_package_add():
+    """
+    package_add mock value
+    """
+    mock_rep = Mock()
+    mock_rep.ok = True
+    mock_rep.json.return_value = {
+        "abrt": "Package added Successfully."
+    }
+    return mock_rep
+
+
 def mock_coverage_rule():
     """
     rule_coverage mock value
