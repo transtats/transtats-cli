@@ -1,5 +1,5 @@
 .\" transtats - Command line interface for transtats
-.TH "TRANSTATS" "1" "12th July 2021" "transtats 0.5.0" "User Commands"
+.TH "TRANSTATS" "1" "1st July 2022" "transtats 0.6.0" "User Commands"
 .SH "NAME"
 transtats \- Command line interface for transtats
 .SH "SYNOPSIS"
@@ -30,8 +30,8 @@ Show this message and exit.
       Available repo-types are default, l10n, transifex, weblate
 
 .br
-.I \fB * package [OPTIONS] PACKAGE_NAME
-   Translation status of a package.
+.I \fB * package [OPTIONS] COMMAND [ARGS]... PACKAGE_NAME
+   Package related operations.
 
 .br
 .I \fB * version [OPTIONS]
@@ -48,24 +48,24 @@ Show this message and exit.
 
 .PP
    \fBTo check the translation status of any partiular package for all the available release branches on transtats server.\fP
-   transtats package abrt
+   transtats package status abrt
 
 .PP
    \fBTo check the if package exists on the transtats server.\fP
-   transtats package --exist abrt
+   transtats package status --exist abrt
 
 .PP
    \fBTo check the translation health of any partiular package for all the available release branches on transtats server.\fP
-   transtats package --health abrt
+   transtats package status --health abrt
 
 .PP
    \fBTo check the translation status for available packages in any pre-defined Linux distribution release on transtats server.\fP
-   transtats release fedora-35
+   transtats release fedora-37
 
 .PP
    \fBTo check the translation status for available packages in any pre-defined Linux distribution release on transtats server.\fP
    \fBBut if you need to know this status categorized by individual languages then use --detail\fP
-   transtats release --detail fedora-35
+   transtats release --detail fedora-37
 
 .PP
    \fBTo know the version of this transtats client.\fP
@@ -78,10 +78,16 @@ Show this message and exit.
 .PP
    \fBTo submit a job to transtats server. There are 6 types of job that users can submit.\fP
       Various job type command examples are given below
-      transtats job run --repo-type l10n --repo-branch f35 syncupstream anaconda
-      transtats job run --repo-type l10n --repo-branch f35 --build-system koji --build-tag f35 syncdownstream anaconda
-      transtats job run --repo-branch main --release-slug fedora-33 stringchange anaconda
+      transtats job run --repo-type l10n --repo-branch f37 syncupstream anaconda
+      transtats job run --repo-type l10n --repo-branch f37 --build-system koji --build-tag f37 syncdownstream anaconda
+      transtats job run --repo-branch main --release-slug fedora-37 stringchange anaconda
 
+.PP
+   \fBTo add a package to transtats server.\fP
+      Various command examples are given below
+      transtats package add celluloid --upstream-url https://github.com/celluloid-player/celluloid --transplatform-slug WLTEPUB --release-stream Fedora
+      transtats package add fedora-media-writer --upstream-url https://github.com/FedoraQt/MediaWriter  --transplatform-slug WLTEFED --release-stream Fedora
+      
 .SH "NOTES"
    These commands give output in plain text format. If you need the same output
    in json format then just add to every above command --json option.

@@ -1,4 +1,4 @@
-# Copyright 2017-2021 Red Hat, Inc.
+# Copyright 2017-2022 Red Hat, Inc.
 # All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
@@ -22,7 +22,7 @@ from tscli.stats import commands as trans
 from tscli.jobs import commands as jobs
 from tscli.packages import commands as pkgs
 
-APP_VERSION = "0.5.0"
+APP_VERSION = "0.6.0"
 
 
 class AppContext(object):
