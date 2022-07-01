@@ -1,7 +1,16 @@
 Changelog
 =========
 
-0.5.0 (2020-07-12)
+0.6.0 (2022-07-01)
+-----------------
+- transtats add --package cmd (sdp5)
+- Implement add package command (sdp5)
+- Extract package commands to a new group for adding new packages
+  and showing stats, health etc. (sdp5)
+- Update unit tests (sdp5)
+- Update man page (pnemade)
+
+0.5.0 (2021-07-12)
 -----------------
 - Update textoutput.py (sundeep-co-in)
 - Add new options repo-type and repo-branch to job run command (sundeep-co-in)
