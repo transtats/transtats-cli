@@ -1,4 +1,4 @@
-# Copyright 2017 Red Hat, Inc.
+# Copyright 2017, 2022 Red Hat, Inc.
 # All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
@@ -96,6 +96,18 @@ def mock_package_status_health_in_sync():
     mock_rep.ok = True
     mock_rep.json.return_value = {
         "authconfig": "Translation platform statistics are in sync with the build system."
+    }
+    return mock_rep
+
+
+def mock_package_add():
+    """
+    package_add mock value
+    """
+    mock_rep = Mock()
+    mock_rep.ok = True
+    mock_rep.json.return_value = {
+        "abrt": "Package added Successfully."
     }
     return mock_rep
 

@@ -1,4 +1,4 @@
-# Copyright 2017-2019 Red Hat, Inc.
+# Copyright 2017-2019, 2022 Red Hat, Inc.
 # All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
@@ -16,33 +16,6 @@
 import click
 from tscli.restapi import ConsumeAPIs
 from tscli.textoutput import TextOutputAPIs
-
-
-@click.command()
-@click.option(
-    '--server-url', envvar='TRANSTATS_SERVER', help="Transtats Server URL")
-@click.option("--exist", is_flag=True,
-              help="Determine if the package exist in Transtats or not.")
-@click.option("--health", is_flag=True,
-              help="Get package health")
-@click.option(
-    '--json', is_flag=True, envvar='JSON_OUTPUT', help="Print in JSON format")
-@click.argument('package-name')
-@click.pass_obj
-def package(app_context, server_url, package_name, exist, health, json):
-    """Translation status of a package.
-       e.g. transtats package anaconda """
-    api_obj = ConsumeAPIs(server_url or app_context.server_url) if json \
-        else TextOutputAPIs(server_url or app_context.server_url)
-
-    if exist:
-        response = api_obj.package_status(package_name, exist=True, health=None)
-    elif health:
-        response = api_obj.package_status(package_name, exist=None, health=True)
-    else:
-        response = api_obj.package_status(package_name, exist=None, health=None)
-    if isinstance(response, dict):
-        app_context.print_r(response)
 
 
 @click.command()

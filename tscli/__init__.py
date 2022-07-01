@@ -1,4 +1,4 @@
-# Copyright 2017-2021 Red Hat, Inc.
+# Copyright 2017-2022 Red Hat, Inc.
 # All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
@@ -20,8 +20,9 @@ from tscli.common import commands as common
 from tscli.config import get_config, get_config_item
 from tscli.stats import commands as trans
 from tscli.jobs import commands as jobs
+from tscli.packages import commands as pkgs
 
-APP_VERSION = "0.5.0"
+APP_VERSION = "0.6.0"
 
 
 class AppContext(object):
@@ -50,7 +51,7 @@ def entry_point(ctx):
 
 
 entry_point.add_command(common.version)
-entry_point.add_command(trans.package)
+entry_point.add_command(pkgs.package)
 entry_point.add_command(trans.release)
 entry_point.add_command(trans.coverage)
 entry_point.add_command(jobs.job)
